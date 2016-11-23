@@ -1,0 +1,19 @@
+
+.sudo Format Readme
+
+	Sudo files are saved sudoku puzzles.
+
+	The first line in a sudo file is the base number for the sudoku puzzle (n).  So n=3 in a 9x9, n=4 in a 16x16, etc.
+	The next n*n lines contain n*n values separated by pipes ('|'). There are only pipes between values not at the start of the line or the end.
+	The pipe-separated values are the givens (starting values) in the sudoku puzzle. Squares that start blank can either be nothing or be any number of space or tab columns. 
+	Any line starting with a # is a comment and is ignored. The file is processed as though those lines aren't there.
+
+Example file for a 4x4.
+
+	# This is a comment at the start of the file. It doesn't count as the first line.
+	2
+	1| | |4
+	 | | |3
+	2| | |
+	 | | |
+	# A completely unnecessary ending comment.
