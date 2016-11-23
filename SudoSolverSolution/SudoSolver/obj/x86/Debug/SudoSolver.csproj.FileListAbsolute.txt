@@ -1,0 +1,48 @@
+C:\Users\TAC\AppData\Local\Temporary Projects\SudoSolver\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\TAC\AppData\Local\Temporary Projects\SudoSolver\obj\x86\Debug\SudoSolver.frmMain.resources
+C:\Users\TAC\AppData\Local\Temporary Projects\SudoSolver\obj\x86\Debug\SudoSolver.Properties.Resources.resources
+C:\Users\TAC\AppData\Local\Temporary Projects\SudoSolver\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\TAC\AppData\Local\Temporary Projects\SudoSolver\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\TAC\AppData\Local\Temporary Projects\SudoSolver\bin\Debug\SudoSolver.exe
+C:\Users\TAC\AppData\Local\Temporary Projects\SudoSolver\bin\Debug\SudoSolver.pdb
+C:\Users\TAC\AppData\Local\Temporary Projects\SudoSolver\obj\x86\Debug\SudoSolver.exe
+C:\Users\TAC\AppData\Local\Temporary Projects\SudoSolver\obj\x86\Debug\SudoSolver.pdb
+C:\Users\TAC\documents\visual studio 2010\Projects\SudoSolver\SudoSolver\obj\x86\Debug\SudoSolver.exe
+C:\Users\TAC\documents\visual studio 2010\Projects\SudoSolver\SudoSolver\obj\x86\Debug\SudoSolver.pdb
+C:\Users\TAC\documents\visual studio 2010\Projects\SudoSolver\SudoSolver\bin\Debug\SudoSolver.exe
+C:\Users\TAC\documents\visual studio 2010\Projects\SudoSolver\SudoSolver\bin\Debug\SudoSolver.pdb
+C:\Users\TAC\documents\visual studio 2010\Projects\SudoSolver\SudoSolver\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\TAC\documents\visual studio 2010\Projects\SudoSolver\SudoSolver\obj\x86\Debug\SudoSolver.frmMain.resources
+C:\Users\TAC\documents\visual studio 2010\Projects\SudoSolver\SudoSolver\obj\x86\Debug\SudoSolver.Properties.Resources.resources
+C:\Users\TAC\documents\visual studio 2010\Projects\SudoSolver\SudoSolver\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\TAC\documents\visual studio 2010\Projects\SudoSolver\SudoSolver\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Caleb\Downloads\SudoSolver\SudoSolver\SudoSolver\obj\x86\Debug\SudoSolver.exe
+C:\Users\Caleb\Downloads\SudoSolver\SudoSolver\SudoSolver\obj\x86\Debug\SudoSolver.pdb
+C:\Users\Caleb\Downloads\SudoSolver\SudoSolver\SudoSolver\bin\Debug\SudoSolver.exe
+C:\Users\Caleb\Downloads\SudoSolver\SudoSolver\SudoSolver\bin\Debug\SudoSolver.pdb
+C:\Users\Caleb\Downloads\SudoSolver\SudoSolver\SudoSolver\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Caleb\Downloads\SudoSolver\SudoSolver\SudoSolver\obj\x86\Debug\SudoSolver.frmMain.resources
+C:\Users\Caleb\Downloads\SudoSolver\SudoSolver\SudoSolver\obj\x86\Debug\SudoSolver.Properties.Resources.resources
+C:\Users\Caleb\Downloads\SudoSolver\SudoSolver\SudoSolver\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Caleb\Downloads\SudoSolver\SudoSolver\SudoSolver\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Caleb\Documents\Video Game Programming\SudoSolver\SudoSolver\SudoSolver\obj\x86\Debug\SudoSolver.exe
+C:\Users\Caleb\Documents\Video Game Programming\SudoSolver\SudoSolver\SudoSolver\obj\x86\Debug\SudoSolver.pdb
+C:\Users\Caleb\Documents\Video Game Programming\SudoSolver\SudoSolver\SudoSolver\bin\Debug\SudoSolver.exe
+C:\Users\Caleb\Documents\Video Game Programming\SudoSolver\SudoSolver\SudoSolver\bin\Debug\SudoSolver.pdb
+C:\Users\Caleb\Documents\Video Game Programming\SudoSolver\SudoSolver\SudoSolver\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\Caleb\Documents\Video Game Programming\SudoSolver\SudoSolver\SudoSolver\obj\x86\Debug\SudoSolver.frmMain.resources
+C:\Users\Caleb\Documents\Video Game Programming\SudoSolver\SudoSolver\SudoSolver\obj\x86\Debug\SudoSolver.Properties.Resources.resources
+C:\Users\Caleb\Documents\Video Game Programming\SudoSolver\SudoSolver\SudoSolver\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\Caleb\Documents\Video Game Programming\SudoSolver\SudoSolver\SudoSolver\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\Caleb\Documents\Programming\Video Game Programming\SudoSolver\SudoSolver\SudoSolver\obj\x86\Debug\SudoSolver.exe
+C:\Users\Caleb\Documents\Programming\Video Game Programming\SudoSolver\SudoSolver\SudoSolver\obj\x86\Debug\SudoSolver.pdb
+C:\Users\Caleb\Desktop\Development\GitProjects\sudo-solver\SudoSolverSolution\SudoSolver\obj\x86\Debug\SudoSolver.exe
+C:\Users\Caleb\Desktop\Development\GitProjects\sudo-solver\SudoSolverSolution\SudoSolver\obj\x86\Debug\SudoSolver.pdb
+C:\Users\Caleb\Desktop\Development\GitProjects\sudo-solver\SudoSolverSolution\SudoSolver\bin\Debug\SudoSolver.exe
+C:\Users\Caleb\Desktop\Development\GitProjects\sudo-solver\SudoSolverSolution\SudoSolver\bin\Debug\SudoSolver.pdb
+C:\Users\Caleb\Desktop\Development\GitProjects\sudo-solver\SudoSolverSolution\SudoSolver\bin\Debug\SudoSolver.exe.CodeAnalysisLog.xml
+C:\Users\Caleb\Desktop\Development\GitProjects\sudo-solver\SudoSolverSolution\SudoSolver\bin\Debug\SudoSolver.exe.lastcodeanalysissucceeded
+C:\Users\Caleb\Desktop\Development\GitProjects\sudo-solver\SudoSolverSolution\SudoSolver\obj\x86\Debug\SudoSolver.csprojResolveAssemblyReference.cache
+C:\Users\Caleb\Desktop\Development\GitProjects\sudo-solver\SudoSolverSolution\SudoSolver\obj\x86\Debug\SudoSolver.frmMain.resources
+C:\Users\Caleb\Desktop\Development\GitProjects\sudo-solver\SudoSolverSolution\SudoSolver\obj\x86\Debug\SudoSolver.Properties.Resources.resources
+C:\Users\Caleb\Desktop\Development\GitProjects\sudo-solver\SudoSolverSolution\SudoSolver\obj\x86\Debug\SudoSolver.csproj.GenerateResource.Cache
