@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace SudoSolver
 {
@@ -83,7 +84,7 @@ namespace SudoSolver
             }
         }
 
-        public void CopyBoard(Board orignal)
+        void CopyBoard(Board orignal)
         {
             for (var row = 0; row < M; row++)
             {
@@ -145,46 +146,47 @@ namespace SudoSolver
                     }
                 }
             }
-
-            bool solutionFound = false;
             
             // If logical methods didn't provide a solution, move on to depth-first search of solutions
             if (IsSolved() == false)
             {
-                // Find first non-set square. Pick a number to go there. Search forward. If it returns invalid, 
-                // try another number. One number has to go in each place, so eventually it will work. May need
-                // to be more efficient.
-
-                foreach (var square in board)
+                // Find the square with the least options and pick a number to go there. Search forward. If it returns invalid, 
+                // try another number. One number has to go in each place, so eventually it will work.
+                var square = SquareWithFewestOptions;
+                for (int num = 1; num <= M; num++)
                 {
-                    // Skip squares that aren't still blank
-                    if (square.HasNumber)
-                        continue;
-
-                    for (int num = 1; (num <= M) && (solutionFound == false); num++)
+                    if (square.IsBlocked(num) == false)
                     {
-                        if (square.IsBlocked(num) == false)
-                        {
-                            var attempt = new Board(this);
-                            attempt.board[square.RowNumber, square.ColNumber].Number = num;
+                        var attempt = new Board(this);
+                        attempt.board[square.RowNumber, square.ColNumber].Number = num;
 
-                            if (attempt.solveBoard(solveDepth+1))
-                            {
-                                GreatestDepth = attempt.SolveDepth;
-                                if (SolveDepth != 1)
-                                    SolveDepth = attempt.SolveDepth;
-                                CopyBoard(attempt);
-                                solutionFound = true;
-                            }
+                        if (attempt.solveBoard(solveDepth+1))
+                        {
+                            GreatestDepth = attempt.SolveDepth;
+                            if (SolveDepth != 1)
+                                SolveDepth = attempt.SolveDepth;
+                            CopyBoard(attempt);
+                            break;
                         }
                     }
-
-                    if (solutionFound)
-                        break;
                 }
             }
 
             return IsSolved();
+        }
+
+        /// <summary>
+        /// Get the first blank square with the fewest options.
+        /// </summary>
+        Square SquareWithFewestOptions
+        {
+            get
+            {
+                return (from Square s in board
+                        where s.HasNumber == false
+                        orderby s.CountAvailable()
+                        select s).First();
+            }
         }
 
         public void setChangeMade()
@@ -197,7 +199,7 @@ namespace SudoSolver
             return allNumbersInAreas(Rows) && allNumbersInAreas(Columns) && allNumbersInAreas(Regions);
         }
 
-        public bool allNumbersInAreas(Area[] areas)
+        bool allNumbersInAreas(Area[] areas)
         {
             foreach (var area in areas)
             {

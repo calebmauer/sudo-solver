@@ -11,9 +11,19 @@ namespace SudoSolver
         TextBox[,] boardTextBoxes;
         Panel boardPanel;
 
+        string appTitle = "Sudo Solver";
+        string puzzleName = "";
+
         public frmMain()
         {
             InitializeComponent();
+            updateTitle();
+        }
+
+        void updateTitle(string puzzleName = "")
+        {
+            this.puzzleName = puzzleName;
+            Text = appTitle + (puzzleName.Length > 0 ? " - " + puzzleName : "");
         }
 
         private void generateBoard(int n, int m)
@@ -148,17 +158,6 @@ namespace SudoSolver
             const int n = 3;
             const int m = n * n;
 
-            // Evil, need to make guesses (level 5) to solve
-            var evilBoard = new String[m, m] {{"8", "", "", "4", "", "", "", "", ""},
-                                          {"2", "", "", "7", "", "6", "", "", ""},
-                                          {"7", "", "5", "", "8", "", "", "9", ""},
-                                          {"", "", "", "", "", "", "", "8", "6"},
-                                          {"", "8", "", "", "9", "", "", "4", ""},
-                                          {"6", "5", "", "", "", "", "", "", ""},
-                                          {"", "1", "", "", "2", "", "5", "", "7"},
-                                          {"", "", "", "1", "", "7", "", "", "9"},
-                                          {"", "", "", "", "", "5", "", "", "3"}};
-
             // Hardest board I could find online, said to be the most difficult 9 x 9
             var hardestBoard = new String[m, m]
                                          {{"8", "", "", "", "", "", "", "", ""},
@@ -190,6 +189,8 @@ namespace SudoSolver
         {
             if(ofdOpenExisting.ShowDialog() == DialogResult.OK)
             {
+                updateTitle(ofdOpenExisting.SafeFileName);
+
                 using (var reader = new StreamReader(ofdOpenExisting.FileName))
                 {
                     // Read size number - square root of number of rows and columns (3 in a 9x9)
@@ -203,7 +204,7 @@ namespace SudoSolver
                         var rowText = reader.ReadLine();
 
                         // Skip lines that start with '#'. These are comment lines.
-                        while(rowText.StartsWith("#"))
+                        while(rowText.Trim().StartsWith("#"))
                         {
                             rowText = reader.ReadLine();
                         }
@@ -233,6 +234,7 @@ namespace SudoSolver
             if (sfdSave.ShowDialog() == DialogResult.OK)
             {
                 var board = makeBoardFromText();
+                var spaces = (board.M > 9) ? "  " : " "; // To help make the columns line up propery in the text file.
                 using (var saveStream = new StreamWriter(sfdSave.FileName))
                 {
                     // First line is the square root of the board dimension
@@ -242,7 +244,7 @@ namespace SudoSolver
                     {
                         for (var j = 0; j < board.M; j++)
                         {
-                            saveStream.Write(board[i, j].HasNumber ? board[i, j].Number.ToString() : " ");
+                            saveStream.Write(board[i, j].HasNumber ? board[i, j].Number.ToString() : spaces);
                             if (j != board.M - 1)
                             {
                                 saveStream.Write("|");
