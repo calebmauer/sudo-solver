@@ -141,7 +141,7 @@ namespace SudoSolver
                 var newSolve = makeBoardFromText();
                 var result = newSolve.solveBoard();
 
-                MessageBox.Show(string.Format("Is Solved: {0}\nGreatest Search Depth: {1}", result ? "Yes" : "No", newSolve.GreatestDepth));
+                MessageBox.Show(string.Format("Is Solved: {0}\nGreatest Search Depth: {1}\nSolve Time: {2}ms", result ? "Yes" : "No", newSolve.GreatestDepth, newSolve.SolveTimeMs));
 
                 setTextFromStringArray(newSolve.toStringArray(), true);
             }
