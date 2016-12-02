@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace SudoSolver
@@ -84,27 +85,38 @@ namespace SudoSolver
             }
         }
 
-        void CopyBoard(Board orignal)
+        void CopyBoard(Board original)
         {
             for (var row = 0; row < M; row++)
             {
                 for (var col = 0; col < M; col++)
                 {
-                    if (orignal.board[row, col].HasNumber && this[row, col].HasNumber == false)
-                        this[row, col].Number = orignal.board[row, col].Number;
+                    this[row, col].Copy(original[row, col]);
                 }
             }
         }
 
         public int SolveDepth = 1;
         public int GreatestDepth = 1;
+        DateTime startTime;
+        DateTime endTime;
+
+        // How long it took to solve the puzzle in milliseconds
+        public double SolveTimeMs
+        {
+            get
+            {
+                Debug.Assert(startTime != null && endTime != null);
+                return (endTime - startTime).Milliseconds;
+            }
+        }
 
         public bool solveBoard(int solveDepth = 1)
         {
             SolveDepth = solveDepth;
 
             changeMade = true;
-
+            startTime = DateTime.Now;
             var iterations = 0;
 
             // Loop until logical methods stop providing results
@@ -150,42 +162,57 @@ namespace SudoSolver
             // If logical methods didn't provide a solution, move on to depth-first search of solutions
             if (IsSolved() == false)
             {
-                // Find the square with the least options and pick a number to go there. Search forward. If it returns invalid, 
-                // try another number. One number has to go in each place, so eventually it will work.
                 var square = SquareWithFewestOptions;
-                for (int num = 1; num <= M; num++)
-                {
-                    if (square.IsBlocked(num) == false)
-                    {
-                        var attempt = new Board(this);
-                        attempt.board[square.RowNumber, square.ColNumber].Number = num;
 
-                        if (attempt.solveBoard(solveDepth+1))
+                // The board isn't solved yet and there are no valid options to try, so this board is unsolvable
+                if (square == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    // Try placing every number on the square that can go there. If it fails, keep trying till there are no options.
+                    for (int num = 1; num <= M; num++)
+                    {
+                        if (square.IsBlocked(num) == false)
                         {
-                            GreatestDepth = attempt.SolveDepth;
-                            if (SolveDepth != 1)
-                                SolveDepth = attempt.SolveDepth;
-                            CopyBoard(attempt);
-                            break;
+                            var attempt = new Board(this);
+                            attempt[square.RowNumber, square.ColNumber].Number = num;
+
+                            if (attempt.solveBoard(solveDepth + 1))
+                            {
+                                GreatestDepth = attempt.SolveDepth;
+                                if (SolveDepth != 1)
+                                    SolveDepth = attempt.SolveDepth;
+                                CopyBoard(attempt);
+                                break;
+                            }
                         }
                     }
                 }
             }
 
+            endTime = DateTime.Now;
             return IsSolved();
         }
 
         /// <summary>
-        /// Get the first blank square with the fewest options.
+        /// Get the first blank square with the fewest options. Null if no squares are blank
+        /// or if no blank squares have any valid numbers that can go on them.
         /// </summary>
         Square SquareWithFewestOptions
         {
             get
             {
-                return (from Square s in board
-                        where s.HasNumber == false
-                        orderby s.CountAvailable()
-                        select s).First();
+                Square candidate = null;
+
+                foreach(var square in board)
+                {
+                    if (square.HasNumber == false && (candidate == null || square.CountAvailable() < candidate.CountAvailable()))
+                        candidate = square;
+                }
+
+                return candidate;
             }
         }
 

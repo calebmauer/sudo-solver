@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 
 namespace SudoSolver
 {
@@ -16,16 +17,14 @@ namespace SudoSolver
         {
             get
             {
-                if (HasNumber == false)
+                if (!HasNumber)
                     throw new Exception("Attempting to read number from a blank square.");
-
                 return number;
             }
             set
             {
-                // Exception for debugging, this code should never set a square that already has a number.
                 if (HasNumber)
-                    throw new Exception("Overwriting number");
+                    throw new Exception("This square already has a number.");
 
                 // Set the number
                 HasNumber = true;
@@ -42,7 +41,7 @@ namespace SudoSolver
                 Region.blockInAllSquares(value);
 
                 // Mark that this square can't take any numbers because it has a number now.
-                for (var i = 0; i < isAvailable.Length; i++)
+                for (var i = 0; i < M; i++)
                 {
                     isAvailable[i] = false;
                 }
@@ -52,7 +51,8 @@ namespace SudoSolver
         public const int UNSET = 0;
         int number = UNSET; // Unset means it doesn't have a number
 
-        bool[] isAvailable;
+        BitArray isAvailable;
+        int M;
 
         /// <summary>
         /// The row on the board the square is in.
@@ -81,12 +81,24 @@ namespace SudoSolver
 
         public Square(int m)
         {
-            HasNumber = false;
+            M = m;
+            // Initially all numbers are available because the board starts blank
+            isAvailable = new BitArray(m);
+            isAvailable.SetAll(true);
+        }
 
-            isAvailable = new bool[m];
-            for (var i = 0; i < isAvailable.Length; i++)
+        public void Copy(Square original)
+        {
+            if (HasNumber == false)
             {
-                isAvailable[i] = true;
+                if (original.HasNumber)
+                {
+                    Number = original.Number;
+                }
+                else
+                {
+                    isAvailable = (BitArray)original.isAvailable.Clone();
+                }
             }
         }
 
@@ -116,9 +128,9 @@ namespace SudoSolver
         public int CountAvailable()
         {
             int count = 0;
-            foreach (var available in isAvailable)
-            {
-                if (available) count++;
+            for (var i = 0; i < M; i++)
+            { 
+                if (isAvailable[i]) count++;
             }
             return count;
         }
