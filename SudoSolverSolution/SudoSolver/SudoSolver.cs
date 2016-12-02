@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -18,6 +17,8 @@ namespace SudoSolver
         {
             InitializeComponent();
             updateTitle();
+            // Allow the form to grow to accomodate larger puzzle sizes
+            AutoSize = true;
         }
 
         void updateTitle(string puzzleName = "")
@@ -28,68 +29,68 @@ namespace SudoSolver
 
         private void generateBoard(int n, int m)
         {
-            int txtBoxWidth = 25;
-            int txtBoxHeight = 25;
-            int squarePadding = 5;
-            int startPosX = 20;
-            int startPosY = 40;
-            int panelPadding = 8;
-            const int MAX_TEXT_LENGTH = 2;
+            const int TxtBoxWidth = 25;
+            const int TxtBoxHeight = 25;
+            const int SquarePadding = 5;
+            const int StartPosX = 20;
+            const int StartPosY = 40;
+            const int PanelPadding = 8;
+            const int MaxTextLength = 2;
 
-            if (boardTextBoxes != null)
+            if (boardTextBoxes != null && boardTextBoxes.GetLength(0) == m)
             {
+                // We can just re-use the existing board after clearing the squares
                 foreach (var box in boardTextBoxes)
                 {
-                    box.Dispose();
+                    box.Text = "";
+                    styleAsDefault(box);
                 }
             }
-            if (boardPanel != null)
+            else
             {
-                boardPanel.Dispose();
-            }
-            boardPanel = new Panel();
-            boardPanel.Location = new Point(startPosX, startPosY);
-            boardPanel.Size = new Size(panelPadding * 2 + squarePadding * (n - 1) + m * txtBoxWidth,
-                                        panelPadding * 2 + squarePadding * (n - 1) + m * txtBoxHeight);
-            boardPanel.BackColor = Color.PowderBlue;
-            this.Controls.Add(boardPanel);
-            boardTextBoxes = new TextBox[m, m];
+                SuspendLayout();
 
-            for (int row = 0; row < boardTextBoxes.GetLength(0); row++)
-            {
-                for (int col = 0; col < boardTextBoxes.GetLength(1); col++)
+                // Dispose the existing controls
+                if (boardTextBoxes != null)
                 {
-                    boardTextBoxes[row, col] = new TextBox();
-                    boardTextBoxes[row, col].Multiline = true;
-                    boardTextBoxes[row, col].Size = new Size(txtBoxWidth, txtBoxHeight);
-
-                    boardTextBoxes[row, col].Location = new Point(
-                                            panelPadding + (txtBoxWidth * col) + (squarePadding * (col / n))
-                                            , panelPadding + (txtBoxHeight * row) + (squarePadding * (row / n)));
-                    boardTextBoxes[row, col].MaxLength = MAX_TEXT_LENGTH;
-                    boardTextBoxes[row, col].TextAlign = HorizontalAlignment.Center;
-
-                    boardPanel.Controls.Add(boardTextBoxes[row, col]);
+                    foreach (var box in boardTextBoxes)
+                    {
+                        box.Dispose();
+                    }
                 }
-            }
-
-            // Allow the form to grow to accomodate larger puzzle sizes
-            AutoSize = true;
-        }
-
-        int[,] makeIntFromBoard(Square[,] board)
-        {
-            int[,] returnArray = new int[board.GetLength(0), board.GetLength(1)];
-
-            for (var row = 0; row < board.GetLength(0); row++)
-            {
-                for (var col = 0; col < board.GetLength(1); col++)
+                if (boardPanel != null)
                 {
-                    returnArray[row, col] = board[row, col].Number;
+                    boardPanel.Dispose();
                 }
-            }
 
-            return returnArray;
+                boardPanel = new Panel();
+                boardPanel.Location = new Point(StartPosX, StartPosY);
+                boardPanel.Size = new Size(PanelPadding * 2 + SquarePadding * (n - 1) + m * TxtBoxWidth,
+                                            PanelPadding * 2 + SquarePadding * (n - 1) + m * TxtBoxHeight);
+                boardPanel.BackColor = Color.PowderBlue;
+                Controls.Add(boardPanel);
+                boardTextBoxes = new TextBox[m, m];
+
+                for (var row = 0; row < boardTextBoxes.GetLength(0); row++)
+                {
+                    for (var col = 0; col < boardTextBoxes.GetLength(1); col++)
+                    {
+                        boardTextBoxes[row, col] = new TextBox();
+                        boardTextBoxes[row, col].Multiline = true;
+                        boardTextBoxes[row, col].Size = new Size(TxtBoxWidth, TxtBoxHeight);
+
+                        boardTextBoxes[row, col].Location = new Point(
+                                                PanelPadding + (TxtBoxWidth * col) + (SquarePadding * (col / n))
+                                                , PanelPadding + (TxtBoxHeight * row) + (SquarePadding * (row / n)));
+                        boardTextBoxes[row, col].MaxLength = MaxTextLength;
+                        boardTextBoxes[row, col].TextAlign = HorizontalAlignment.Center;
+
+                        boardPanel.Controls.Add(boardTextBoxes[row, col]);
+                    }
+                }
+
+                ResumeLayout();
+            }
         }
 
         private Board makeBoardFromText()
@@ -109,29 +110,49 @@ namespace SudoSolver
             return newBoard;
         }
 
-        private void setTextFromStringArray(String[,] board, bool isSolution)
+        private void setTextFromBoard(Board board, bool isSolution = false)
         {
-            for (int row = 0; row < board.GetLength(0); row++)
+            // If we are loading a board for the first time (not just filling in the solution) draw the board
+            if (!isSolution)
+                generateBoard(board.N, board.M);
+
+            for (var row = 0; row < board.M; row++)
             {
-                for (int col = 0; col < board.GetLength(1); col++)
+                for (var col = 0; col < board.M; col++)
                 {
                     if (isSolution && string.IsNullOrWhiteSpace(boardTextBoxes[row, col].Text))
                     {
-                        boardTextBoxes[row, col].Text = board[row, col];
-                        boardTextBoxes[row, col].ForeColor = Color.Blue;
+                        boardTextBoxes[row, col].Text = board[row, col].ToString();
+                        styleAsSolution(boardTextBoxes[row, col]);
                     }
                     else if (!isSolution)
                     {
-                        boardTextBoxes[row, col].Text = board[row, col];
-                        if (board[row, col] != "")
+                        boardTextBoxes[row, col].Text = board[row, col].ToString();
+                        if (boardTextBoxes[row, col].Text != "")
                         {
-                            boardTextBoxes[row, col].Enabled = false;
-                            boardTextBoxes[row, col].Font = new Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-                            boardTextBoxes[row, col].ForeColor = SystemColors.ControlText;
+                            styleAsGiven(boardTextBoxes[row, col]);
                         }
                     }
                 }
             }
+        }
+
+        private void styleAsSolution(TextBox box)
+        {
+            box.ReadOnly = false;
+            box.ForeColor = Color.Blue;
+        }
+
+        private void styleAsDefault(TextBox box)
+        {
+            box.ReadOnly = false;
+            box.ForeColor = Color.Black;
+        }
+
+        private void styleAsGiven(TextBox box)
+        {
+            box.ReadOnly = true;
+            box.ForeColor = Color.Black;
         }
 
         private void solveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -143,7 +164,7 @@ namespace SudoSolver
 
                 MessageBox.Show(string.Format("Is Solved: {0}\nGreatest Search Depth: {1}\nSolve Time: {2}ms", result ? "Yes" : "No", newSolve.GreatestDepth, newSolve.SolveTimeMs));
 
-                setTextFromStringArray(newSolve.toStringArray(), true);
+                setTextFromBoard(newSolve, true);
             }
         }
 
@@ -155,23 +176,7 @@ namespace SudoSolver
 
         private void loadTestBoardToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            const int n = 3;
-            const int m = n * n;
-
-            // Hardest board I could find online, said to be the most difficult 9 x 9
-            var hardestBoard = new String[m, m]
-                                         {{"8", "", "", "", "", "", "", "", ""},
-                                          {"", "", "3", "6", "", "", "", "", ""},
-                                          {"", "7", "", "", "9", "", "2", "", ""},
-                                          {"", "5", "", "", "", "7", "", "", ""},
-                                          {"", "", "", "", "4", "5", "7", "", ""},
-                                          {"", "", "", "1", "", "", "", "3", ""},
-                                          {"", "", "1", "", "", "", "", "6", "8"},
-                                          {"", "", "8", "5", "", "", "", "1", ""},
-                                          {"", "9", "", "", "", "", "4", "", ""}};
-
-            generateBoard(n, m);
-            setTextFromStringArray(hardestBoard, false);
+            loadBoardFromFile(@"..\..\..\..\Saved Puzzles\HardestBoard.sudo", "HardestBoard.sudo");
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -179,9 +184,8 @@ namespace SudoSolver
             var newBoardDialog = new NewBoardDialog();
             if (newBoardDialog.ShowDialog() == DialogResult.OK)
             {
-                var n = newBoardDialog.ChosenSize;
-                var m = n * n;
-                generateBoard(n, m);
+                var board = new Board(newBoardDialog.ChosenSize);
+                setTextFromBoard(board);
             }
         }
 
@@ -189,37 +193,45 @@ namespace SudoSolver
         {
             if(ofdOpenExisting.ShowDialog() == DialogResult.OK)
             {
-                updateTitle(ofdOpenExisting.SafeFileName);
+                loadBoardFromFile(ofdOpenExisting.FileName, ofdOpenExisting.SafeFileName);
+            }
+        }
 
-                using (var reader = new StreamReader(ofdOpenExisting.FileName))
+        private void loadBoardFromFile(string fileName, string safeFileName)
+        {
+            updateTitle(safeFileName);
+
+            using (var reader = new StreamReader(fileName))
+            {
+                // Read size number - square root of number of rows and columns (3 in a 9x9)
+                var n = Convert.ToInt32(reader.ReadLine());
+                var m = n * n;
+
+                var board = new Board(n);
+
+                for (var i = 0; i < m; i++)
                 {
-                    // Read size number - square root of number of rows and columns (3 in a 9x9)
-                    var n = Convert.ToInt32(reader.ReadLine());
-                    var m = n * n;
+                    var rowText = reader.ReadLine();
 
-                    var board = new string[m, m];
-
-                    for (var i = 0; i < m; i++)
+                    // Skip lines that start with '#'. These are comment lines.
+                    while (rowText.Trim().StartsWith("#"))
                     {
-                        var rowText = reader.ReadLine();
-
-                        // Skip lines that start with '#'. These are comment lines.
-                        while(rowText.Trim().StartsWith("#"))
-                        {
-                            rowText = reader.ReadLine();
-                        }
-
-                        var split = rowText.Split('|');
-                        
-                        for (var j = 0; j < m; j++)
-                        {
-                            board[i, j] = split[j].Trim();
-                        }
+                        rowText = reader.ReadLine();
                     }
 
-                    generateBoard(n, m);
-                    setTextFromStringArray(board, false);
+                    var split = rowText.Split('|');
+
+                    for (var j = 0; j < m; j++)
+                    {
+                        try
+                        {
+                            board[i, j].Number = Convert.ToInt32(split[j].Trim());
+                        }
+                        catch (FormatException) { } // Ignore format exception for blanks
+                    }
                 }
+                
+                setTextFromBoard(board);
             }
         }
 

@@ -234,23 +234,5 @@ namespace SudoSolver
             }
             return true;
         }
-
-        public string[,] toStringArray()
-        {
-            var stringArray = new string[M, M];
-
-            for (var row = 0; row < M; row++)
-            {
-                for (var col = 0; col < M; col++)
-                {
-                    if (board[row, col].HasNumber)
-                        stringArray[row, col] = board[row, col].Number.ToString();
-                    else
-                        stringArray[row, col] = "";
-                }
-            }
-
-            return stringArray;
-        }
     }
 }

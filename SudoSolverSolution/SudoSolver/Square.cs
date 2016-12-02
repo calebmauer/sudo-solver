@@ -143,5 +143,10 @@ namespace SudoSolver
         {
             isAvailable[num - 1] = false;
         }
+
+        public override string ToString()
+        {
+            return HasNumber ? Number.ToString() : "";
+        }
     }
 }
